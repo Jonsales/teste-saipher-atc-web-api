@@ -2,13 +2,13 @@
 
 Projeto criado em .NET Core 3.1
 
-## Development server
+## Documentação de API
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:5000/`. The app will automatically reload if you change any of the source files.
+Existe um arquivo com todas os end-points que pode se exportar e verificar no Postman;
 
 ## Criar Base de Dados
 
-Realizar query no SQL -> CREATE DATABASE databasename;;
+Realizar query no SQL -> CREATE DATABASE TESTE_SAIPHER_ATC;;
 Ao criar a Database, verifique a connectionString e altere no o valor da chave ConnectionStrings-> DefaultConnection no documento Json, localizado em 1 - Presentation / Teste.Saipher.ATC.WebAPI 
 
 ## Criar tabelas
