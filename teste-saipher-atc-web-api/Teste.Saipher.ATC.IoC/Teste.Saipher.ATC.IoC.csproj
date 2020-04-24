@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RootNamespace>Teste.Saipher.ATC.IoC</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="9.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Teste.Saipher.ATC.CrossCutting\Teste.Saipher.ATC.CrossCutting.csproj" />
+    <ProjectReference Include="..\Teste.Saipher.ATC.Domain\Teste.Saipher.ATC.Domain.csproj" />
+  </ItemGroup>
+
+</Project>
