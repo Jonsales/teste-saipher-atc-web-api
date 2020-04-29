@@ -1,18 +1,13 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json.Linq;
-using Teste.Saipher.ATC.Application.Interfaces;
 using Teste.Saipher.ATC.Application.Interfaces.Base;
-using Teste.Saipher.ATC.Application.Models.Request;
 using Teste.Saipher.ATC.Application.Models.Result;
 using Teste.Saipher.ATC.Application.Models.ViewModels.Base;
 using Teste.Saipher.ATC.Domain.Class.Filters;
 using Teste.Saipher.ATC.Domain.Interfaces.Services.Helper;
 using System;
-using System.IO;
-using System.Text;
 using System.Threading.Tasks;
+using Teste.Saipher.ATC.Domain.Class;
 
 namespace Teste.Saipher.ATC.WebAPI.Controllers.Base
 {

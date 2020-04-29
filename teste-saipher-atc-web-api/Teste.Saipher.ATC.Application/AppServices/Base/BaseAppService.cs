@@ -1,15 +1,14 @@
 ﻿using Teste.Saipher.ATC.Application.Interfaces.Base;
-using Teste.Saipher.ATC.Application.Models.Request;
 using Teste.Saipher.ATC.Application.Models.Result;
 using Teste.Saipher.ATC.Application.Models.ViewModels.Base;
 using Teste.Saipher.ATC.Domain.Class.Filters;
 using Teste.Saipher.ATC.Domain.Class.Models.Base;
-using Teste.Saipher.ATC.Domain.Interfaces.Filter;
 using Teste.Saipher.ATC.Domain.Interfaces.Services.Base;
 using Teste.Saipher.ATC.Domain.Interfaces.Services.Helper;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Teste.Saipher.ATC.Domain.Class;
 
 namespace Teste.Saipher.ATC.Application.AppServices.Base
 {
@@ -86,16 +85,16 @@ namespace Teste.Saipher.ATC.Application.AppServices.Base
             }
         }
 
-        public async Task<BaseRequestResultList<TViewModel>> Listar(PaginateRequest<TFilter> filtroRequest)
+        public async Task<BaseRequestResultList<TViewModel>> Listar(PaginateRequest<TFilter> paginate)
         {
             try
             {
-                var quantidadePorPagina = VerificarQuantidadePadrao(filtroRequest.quantidadePorPagina);
-                var ret = _mapper.Map<List<TViewModel>, List<TModel>>(await _service.Listar(filtroRequest.filtro, filtroRequest.paginaAtual, quantidadePorPagina));
+                var quantidadePorPagina = VerificarQuantidadePadrao(paginate.quantidadePorPagina);
+                var ret = _mapper.Map<List<TViewModel>, List<TModel>>(await _service.Listar(paginate));
                 var total = await _service.Count();
 
                 return new BaseRequestResultList<TViewModel>(
-                    new BasePaginateResult<TViewModel>(ret, filtroRequest.paginaAtual, total, quantidadePorPagina));
+                    new BasePaginateResult<TViewModel>(ret, paginate.paginaAtual, total, quantidadePorPagina));
             }
             catch (Exception ex)
             {

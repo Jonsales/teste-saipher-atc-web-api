@@ -3,13 +3,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Teste.Saipher.ATC.Domain.Class.Filters;
+using Teste.Saipher.ATC.Domain.Class;
 
 namespace Teste.Saipher.ATC.Domain.Interfaces.Repositories.Base
 {
-    public interface IBaseRepository<TModel>
+    public interface IBaseRepository<TModel, TFilter>
         where TModel : BaseModel
+        where TFilter : BaseFilter
     {
-        Task<List<TModel>> Get(int pagAtual, int qtdItensPorPagina);
+        Task<List<TModel>> Get(PaginateRequest<TFilter> paginate);
         Task<TModel> Get(int id);       
         Task<TModel> Update(TModel model);
         Task Delete(int id);

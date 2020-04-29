@@ -1,9 +1,8 @@
-﻿using Teste.Saipher.ATC.Application.Models.Request;
-using Teste.Saipher.ATC.Application.Models.Result;
+﻿using Teste.Saipher.ATC.Application.Models.Result;
 using Teste.Saipher.ATC.Application.Models.ViewModels.Base;
 using Teste.Saipher.ATC.Domain.Class.Filters;
-using Teste.Saipher.ATC.Domain.Interfaces.Filter;
 using System.Threading.Tasks;
+using Teste.Saipher.ATC.Domain.Class;
 
 namespace Teste.Saipher.ATC.Application.Interfaces.Base
 {

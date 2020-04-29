@@ -2,5 +2,6 @@
 {
     public class GenericFilter : BaseFilter
     {
+        public string valor { get; set; }
     }
 }

@@ -3,8 +3,6 @@ using Teste.Saipher.ATC.Domain.Class.Models;
 using Teste.Saipher.ATC.Domain.Interfaces.Repositories;
 using Teste.Saipher.ATC.Domain.Interfaces.Services;
 using Teste.Saipher.ATC.Domain.Services.Base;
-using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Teste.Saipher.ATC.Domain.Services
@@ -15,15 +13,8 @@ namespace Teste.Saipher.ATC.Domain.Services
         {
         }
 
-        public override Task<int> Count(GenericFilter filtro = null)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Task<List<PlanoVooModel>> Listar(GenericFilter filtro = null, int pagAtual = 1, int qtdItensPorPagina = 10)
-        {
-            throw new NotImplementedException();
-        }
+        public async override Task<int> Count(GenericFilter filtro = null) =>
+            await _repository.Count();
 
         public override void Validar(PlanoVooModel model)
         {

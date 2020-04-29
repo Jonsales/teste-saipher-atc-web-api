@@ -5,11 +5,12 @@ using Teste.Saipher.ATC.Domain.Interfaces.Services.Base;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Teste.Saipher.ATC.Domain.Class;
 
 namespace Teste.Saipher.ATC.Domain.Services.Base
 {
     public abstract class BaseService<TRepository, TModel, TFilter> : IBaseService<TModel, TFilter>
-        where TRepository : IBaseRepository<TModel>
+        where TRepository : IBaseRepository<TModel, TFilter>
         where TModel : BaseModel
         where TFilter : BaseFilter
     {
@@ -33,9 +34,8 @@ namespace Teste.Saipher.ATC.Domain.Services.Base
         }
         public async Task Deletar(int id) =>
             await _repository.Delete(id);
-        public async Task<List<TModel>> Listar(int pagAtual, int qtdItensPorPagina) =>
-            await _repository.Get(pagAtual, qtdItensPorPagina);
-        public abstract Task<List<TModel>> Listar(TFilter filtro = null, int pagAtual = 1, int qtdItensPorPagina = 10);
+        public async Task<List<TModel>> Listar(PaginateRequest<TFilter> paginate) =>
+            await _repository.Get(paginate);
         public abstract void Validar(TModel model);
         public abstract Task<int> Count(TFilter filtro = null);
         protected void InformarErro(string erro) =>

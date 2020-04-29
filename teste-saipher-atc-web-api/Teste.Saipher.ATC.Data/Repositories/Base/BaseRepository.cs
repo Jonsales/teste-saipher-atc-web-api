@@ -10,12 +10,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Teste.Saipher.ATC.Domain.Class;
+using Teste.Saipher.ATC.Domain.Class.Filters;
 
 namespace Teste.Saipher.ATC.Data.Repositories.Base
 {
-    public class BaseRepository<TModel, TEntity> : IBaseRepository<TModel>
+    public abstract class BaseRepository<TModel, TEntity, TFilter> : IBaseRepository<TModel, TFilter>
         where TModel : BaseModel
         where TEntity : BaseEntity
+        where TFilter : BaseFilter
     {
         private readonly IMapperService _mapper;
         public readonly Context _context;
@@ -54,13 +57,17 @@ namespace Teste.Saipher.ATC.Data.Repositories.Base
             }
         }
 
-        public async Task<List<TModel>> Get(int pagAtual, int qtdItensPorPagina)
+        public async Task<List<TModel>> Get(PaginateRequest<TFilter> paginate)
         {
             try
             {
-                _resultList = _context.Set<TModel>().OrderBy(c => c.Id).Skip((pagAtual - 1) * qtdItensPorPagina).Take(qtdItensPorPagina).ToList();
+                var entities = QueryList(_context.Set<TEntity>(), paginate)
+                       .Skip((paginate.paginaAtual - 1) * paginate.quantidadePorPagina)
+                       .Take(paginate.quantidadePorPagina).ToList();
+                _resultList = _mapper.Map<List<TModel>, List<TEntity>>(entities);
                 return _resultList;
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception($@"Erro ao Listar. {ex.Message}");
             }
@@ -112,7 +119,7 @@ namespace Teste.Saipher.ATC.Data.Repositories.Base
             {
                 int count = 0;
                 if (predicate == null)
-                    count = _context.Set<TModel>().Count();
+                    count = _context.Set<TEntity>().Count();
                 else
                     count = _context.Set<TModel>().Where(predicate).Count();
 
@@ -122,5 +129,40 @@ namespace Teste.Saipher.ATC.Data.Repositories.Base
                 throw new Exception($@"Erro ao contar. {ex.Message}");
             }
         }
+        protected IQueryable<TEntity> QueryList(IQueryable<TEntity> query, PaginateRequest<TFilter> paginate)
+        {
+            var filtros = Filtrar(paginate.filtro);
+            if (filtros != null)
+                foreach (var filtro in filtros)
+                    query = query.Where(filtro);
+
+            if (paginate.order != null && paginate.order.order == "desc")
+                query = query.OrderByDescending(GetOrderBy(paginate.order.nome));
+            else
+                query = query.OrderBy(GetOrderBy(paginate.order.nome));
+
+            return query;
+        }
+        protected Expression<Func<TEntity, object>> GetOrderBy(string key)
+        {
+            var type = typeof(TEntity);
+            foreach (var property in type.GetProperties().Where(x => !x.GetGetMethod().IsVirtual).ToList())
+            {
+                string name = property.GetGetMethod().Name.ToLower().Replace("get_", "");
+
+                if (!string.IsNullOrWhiteSpace(name))
+                {
+                    if (key.ToLower().Equals(name))
+                    {
+                        var param = Expression.Parameter(typeof(TEntity), "x");
+                        return Expression.Lambda<Func<TEntity, object>>
+                            (Expression.Convert(Expression.Property(param, property.Name), typeof(object)), param);
+                    }
+                }
+            }
+
+            return null;
+        }
+        protected abstract List<Expression<Func<TEntity, bool>>> Filtrar(TFilter filtro);
     }
 }
