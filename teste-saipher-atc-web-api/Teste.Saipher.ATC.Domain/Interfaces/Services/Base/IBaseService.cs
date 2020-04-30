@@ -15,7 +15,7 @@ namespace Teste.Saipher.ATC.Domain.Interfaces.Services.Base
         Task Deletar(int id);
         Task<List<TModel>> Listar(PaginateRequest<TFilter> paginate);
         Task<TModel> Buscar(int id);
-        void Validar(TModel model);
+        Task Validar(TModel model);
         Task<int> Count(TFilter filtro = null);
     }
 }

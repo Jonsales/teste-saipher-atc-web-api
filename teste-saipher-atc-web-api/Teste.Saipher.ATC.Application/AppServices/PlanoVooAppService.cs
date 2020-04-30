@@ -14,6 +14,6 @@ namespace Teste.Saipher.ATC.Application.AppServices
         {
         }
 
-        internal override string Name { get; set; } = "Mensagem Notificação";
+        internal override string Name { get; set; } = "Plano de Voo";
     }
 }

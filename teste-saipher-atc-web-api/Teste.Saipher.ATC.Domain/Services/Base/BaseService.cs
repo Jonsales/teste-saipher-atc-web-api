@@ -29,14 +29,14 @@ namespace Teste.Saipher.ATC.Domain.Services.Base
             await _repository.Get(id);       
         public async Task<TModel> Criar(TModel model)
         {
-            this.Validar(model);
+            await this.Validar(model);
             return await _repository.Insert(model);
         }
         public async Task Deletar(int id) =>
             await _repository.Delete(id);
         public async Task<List<TModel>> Listar(PaginateRequest<TFilter> paginate) =>
             await _repository.Get(paginate);
-        public abstract void Validar(TModel model);
+        public abstract Task Validar(TModel model);
         public abstract Task<int> Count(TFilter filtro = null);
         protected void InformarErro(string erro) =>
             throw new Exception(erro, new Exception("ERROR"));

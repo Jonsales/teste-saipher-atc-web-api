@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using Teste.Saipher.ATC.Data.Config;
 using Teste.Saipher.ATC.Data.Entities;
 using Teste.Saipher.ATC.Data.Repositories.Base;
@@ -15,6 +17,18 @@ namespace Teste.Saipher.ATC.Data.Repositories
     {
         public PlanoVooRepository(IMapperService mapper, Context context) : base(mapper, context)
         {
+        }
+
+        public async Task<bool> VerficarNumeroVoo(string numeroVoo)
+        {
+            try
+            {
+                return _context.Set<PlanoVoo>().Any(x => x.NumeroVoo.ToLower() == numeroVoo.ToLower());
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($@"Erro ao Verificar Nu=úmero de Voo. {ex.Message}");
+            }
         }
 
         protected override List<Expression<Func<PlanoVoo, bool>>> Filtrar(GenericFilter filtro)

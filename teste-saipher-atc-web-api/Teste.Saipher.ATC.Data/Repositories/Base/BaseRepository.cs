@@ -20,8 +20,8 @@ namespace Teste.Saipher.ATC.Data.Repositories.Base
         where TEntity : BaseEntity
         where TFilter : BaseFilter
     {
-        private readonly IMapperService _mapper;
-        public readonly Context _context;
+        protected readonly IMapperService _mapper;
+        protected readonly Context _context;
 
         public BaseRepository(IMapperService mapper, Context context)
         {
@@ -90,9 +90,10 @@ namespace Teste.Saipher.ATC.Data.Repositories.Base
         {
             try
             {
-                _context.Set<TModel>().Add(model);
+                var entity = _mapper.Map<TEntity, TModel>(model);
+                _context.Set<TEntity>().Add(entity);
                 _context.SaveChanges();
-                return model;
+                return _mapper.Map<TModel, TEntity>(entity);
             }catch(Exception ex)
             {
                 throw new Exception($@"Erro ao Cadastrar. {ex.Message}");
@@ -103,10 +104,11 @@ namespace Teste.Saipher.ATC.Data.Repositories.Base
         {
             try
             {
-                 model.DataAlteracao = DateTime.Now;
-                _context.Entry(model).State = EntityState.Modified;
+                var entity = _mapper.Map<TEntity, TModel>(model);
+                entity.DataAlteracao = DateTime.Now;
+                _context.Entry(entity).State = EntityState.Modified;
                 _context.SaveChanges();
-                return model;
+                return _mapper.Map<TModel, TEntity>(entity); ;
             }catch(Exception ex)
             {
                 throw new Exception($@"Erro ao Atualizar. {ex.Message}");
