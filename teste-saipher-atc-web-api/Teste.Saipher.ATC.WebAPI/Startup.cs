@@ -39,9 +39,7 @@ namespace Teste.Saipher.ATC.WebAPI
                     options.JsonSerializerOptions.MaxDepth = 64;
                 });
 
-            services.AddDbContext<Context>(
-               x => x.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")), ServiceLifetime.Transient
-            );
+            services.AddDbContext<Context>();
 
             BootStrapperConfig.RegisterServices(services);
         }

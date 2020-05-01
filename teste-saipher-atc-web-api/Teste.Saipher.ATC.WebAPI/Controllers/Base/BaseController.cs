@@ -48,7 +48,7 @@ namespace Teste.Saipher.ATC.WebAPI.Controllers.Base
 
         [HttpDelete]
         [Route("{id}")]
-        public async Task<ActionResult> delete([FromBody]int id) =>
+        public async Task<ActionResult> delete(int id) =>
             await this.Result(() => _appService.Deletar(id));
 
         protected async Task<ActionResult> Result(Func<Task<BaseRequestResulData<TViewModel>>> invoker, object body = null)

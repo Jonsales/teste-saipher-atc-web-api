@@ -36,8 +36,12 @@ namespace Teste.Saipher.ATC.Data.Repositories.Base
             try
             {
                 var entity = _mapper.Map<TEntity, TModel>(await Get(id));
-                _context.Set<TEntity>().Remove(entity);
-                _context.SaveChanges();
+                using (var context = new Context())
+                {
+                    context.Set<TEntity>().Attach(entity);
+                    context.Set<TEntity>().Remove(entity);
+                    context.SaveChanges();
+                }
             }
             catch (Exception ex)
             {
@@ -104,15 +108,17 @@ namespace Teste.Saipher.ATC.Data.Repositories.Base
         {
             try
             {
-                TEntity entity = _mapper.Map<TEntity, TModel>(model);
-                entity.DataAlteracao = DateTime.Now;
-
-                var entry = _context.Entry(entity);
-                entry.State = EntityState.Modified;
-                _context.SaveChanges();
-
-                return _mapper.Map<TModel, TEntity>(entity);
-            }catch(Exception ex)
+                using (var context = new Context())
+                {
+                    var entity = _mapper.Map<TEntity, TModel>(model);
+                    entity.DataAlteracao = DateTime.Now;
+                    context.Entry(entity).State = EntityState.Modified;
+                    context.SaveChanges();
+                    model = _mapper.Map<TModel, TEntity>(entity);
+                }
+                return model;
+            }
+            catch(Exception ex)
             {
                 throw new Exception($@"Erro ao Atualizar. {ex.Message}");
             }

@@ -10,7 +10,7 @@ using Teste.Saipher.ATC.Data.Config;
 namespace Teste.Saipher.ATC.Data.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20200424020625_init")]
+    [Migration("20200501021701_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

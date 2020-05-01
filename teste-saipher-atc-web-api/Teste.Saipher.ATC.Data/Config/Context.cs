@@ -7,11 +7,11 @@ namespace Teste.Saipher.ATC.Data.Config
 {
     public class Context : DbContext
     {
-        public Context(DbContextOptions<Context> options)
-            : base(options)
-        {
-            this.ChangeTracker.LazyLoadingEnabled = false;
-        }
+        //public Context(DbContextOptions<Context> options)
+        //    : base(options)
+        //{
+        //    this.ChangeTracker.LazyLoadingEnabled = false;
+        //}
 
         public DbSet<PlanoVoo> PlanoVoo { get; set; }
 
