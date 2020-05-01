@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Teste.Saipher.ATC.Domain.Services
 {
-    public class MensagemNotificacaoService : BaseService<IPlanoVooRepository, PlanoVooModel, GenericFilter>, IPlanoVooService
+    public class PlanoVooService : BaseService<IPlanoVooRepository, PlanoVooModel, GenericFilter>, IPlanoVooService
     {
-        public MensagemNotificacaoService(IPlanoVooRepository repository) : base(repository)
+        public PlanoVooService(IPlanoVooRepository repository) : base(repository)
         {
         }
 
@@ -44,11 +44,20 @@ namespace Teste.Saipher.ATC.Domain.Services
             if (model.Destino.Length != 4)
                 this.InformarErro("O Destino deve conter 7 caracteres");
 
-            if(model.Id == 0)
+            if(model.Origem == model.Destino)
+                this.InformarErro("A Origem e o Destino não podem ser iguais");
+
+            if (model.Id == 0)
             {
                 var existeNumeroVoo = await _repository.VerficarNumeroVoo(model.NumeroVoo);
                 if (existeNumeroVoo)
                     this.InformarErro("O Número do Voo que foi informado, já existe. Informe outro Número do Voo para continuar");
+            }
+            else
+            {
+                var planoVooExistente = await _repository.Get(model.Id);
+                if (planoVooExistente == null)
+                    this.InformarErro("O Plano do Voo não existe");
             }
 
             model.NumeroVoo = model.NumeroVoo.ToUpper();

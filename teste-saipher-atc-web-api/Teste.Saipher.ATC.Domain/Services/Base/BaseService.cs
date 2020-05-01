@@ -22,7 +22,7 @@ namespace Teste.Saipher.ATC.Domain.Services.Base
 
         public async Task<TModel> Atualizar(TModel model)
         {
-            this.Validar(model);
+            await this.Validar(model);
             return await _repository.Update(model);
         }
         public async Task<TModel> Buscar(int id) =>

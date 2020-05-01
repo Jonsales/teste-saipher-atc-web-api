@@ -23,7 +23,7 @@ namespace Teste.Saipher.ATC.IoC
             #endregion
 
             #region SERVICES
-            services.AddScoped<IPlanoVooService, MensagemNotificacaoService>();
+            services.AddScoped<IPlanoVooService, PlanoVooService>();
             services.AddScoped<ILoggerService, LoggerService>();
             #endregion
 

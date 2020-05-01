@@ -104,11 +104,14 @@ namespace Teste.Saipher.ATC.Data.Repositories.Base
         {
             try
             {
-                var entity = _mapper.Map<TEntity, TModel>(model);
+                TEntity entity = _mapper.Map<TEntity, TModel>(model);
                 entity.DataAlteracao = DateTime.Now;
-                _context.Entry(entity).State = EntityState.Modified;
+
+                var entry = _context.Entry(entity);
+                entry.State = EntityState.Modified;
                 _context.SaveChanges();
-                return _mapper.Map<TModel, TEntity>(entity); ;
+
+                return _mapper.Map<TModel, TEntity>(entity);
             }catch(Exception ex)
             {
                 throw new Exception($@"Erro ao Atualizar. {ex.Message}");
